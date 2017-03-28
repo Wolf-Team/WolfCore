@@ -126,7 +126,7 @@ WolfCore.Add.Item=function(a, b, c, d){
 	}
 	WolfCore.items.push({
 		id:a,
-		name:b
+		name:b,
 		texture:{
 			name:c[0],
 			data:c[1],

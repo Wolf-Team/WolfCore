@@ -1,0 +1,85 @@
+WolfCore.API = 1
+
+WolfCore.CallBack.add(par1_string, par2_function, par3_int);
+
+WolfCore.FileAPI.create(par1_string,par2_string)
+WolfCore.FileAPI.createNewDir(par1_string,par2_string)
+WolfCore.FileAPI.delete(par1_string)
+WolfCore.FileAPI.exists(par1_object)
+WolfCore.FileAPI.read(par1_object)
+WolfCore.FileAPI.readBytes(par1_object)
+WolfCore.FileAPI.readFileList(par1_string, par2_string)
+WolfCore.FileAPI.readFolderList(par1_string)
+WolfCore.FileAPI.readLine(par1_object,par2_int)
+WolfCore.FileAPI.readLineText(par1_object, par2_string, par3_string)
+WolfCore.FileAPI.rewrite(par1_object,par2_string)
+WolfCore.FileAPI.select(par1_string,par2_string)
+WolfCore.FileAPI.write(par1_object,par2_string)
+WolfCore.FileAPI.writeBytes(par1_object, par2_byte)
+
+WolfCore.Log.Error(par1_string)
+WolfCore.Log.Info(par1_string)
+WolfCore.Log.Print(par1_wct, par2_string)
+WolfCore.Log.Warning(par1_string)
+
+WolfCore.UI.Button(par1_string)
+WolfCore.UI.dp2pixel(par1_int)
+WolfCore.UI.get9Patch(par1_string, par2_int, par3_int, par4_int, par5_int)
+WolfCore.UI.get(par1_string)
+WolfCore.UI.Panel(par1_int, par2_int,par3_int,par4_int, par5_bool, par6_bool)
+WolfCore.UI.run(par1_function)
+WolfCore.UI.stylizeText(par1_view)
+WolfCore.UI.Text(par1_string)
+
+WolfCore.ERROR
+WolfCore.INFO
+WolfCore.MESSAGE
+WolfCore.WARNING
+
+WolfCore.Date.Day
+WolfCore.Date.Hour
+WolfCore.Date.Minute
+WolfCore.Date.Month
+WolfCore.Date.Second
+WolfCore.Date.time
+WolfCore.Date.Year
+
+WolfCore.Display.dpi
+WolfCore.Display.height
+WolfCore.Display.width
+
+WolfCore.FileAPI.BufferedReader
+WolfCore.FileAPI.File
+WolfCore.FileAPI.FileReader
+WolfCore.FileAPI.FIS
+WolfCore.FileAPI.FOS
+WolfCore.FileAPI.InputStreamReader
+WolfCore.FileAPI.String
+WolfCore.FileAPI.StringBuilder
+
+WolfCore.Path.configs
+WolfCore.Path.logs
+WolfCore.Path.minecraft
+WolfCore.Path.mods
+WolfCore.Path.sdcard
+WolfCore.Path.tmp
+
+WolfCore.UI.Bottom
+WolfCore.UI.BottomLeft
+WolfCore.UI.BottomRight
+WolfCore.UI.Center
+WolfCore.UI.context
+WolfCore.UI.Color.dark
+WolfCore.UI.Color.default.background
+WolfCore.UI.Color.default.text
+WolfCore.UI.ctx
+WolfCore.UI.Left
+WolfCore.UI.Resource.button_normal
+WolfCore.UI.Resource.button_pressed
+WolfCore.UI.Resource.font
+WolfCore.UI.Resource.panel
+WolfCore.UI.Resource.window
+WolfCore.UI.Right
+WolfCore.UI.Top
+WolfCore.UI.TopLeft
+WolfCore.UI.TopRight

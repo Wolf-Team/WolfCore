@@ -1,6 +1,3 @@
-LoadingWindow.setStatus("Load FileAPI");
-//WolfCore.Log.Info("Инициализация FileAPI");
-
 WolfCore.FileAPI = {
 	File:java.io.File,
 	FileReader:java.io.FileReader,
@@ -60,15 +57,14 @@ WolfCore.FileAPI = {
         var lineArray = readT.split('\n');
         return lineArray[line - 1];
     },
-    readLineText: function(fileRLT, sp, text) {
-       // var fileRLT = new WolfCore.FileAPI.File(path);
+    readLineText: function(path, sp, text) {
+        var fileRLT = new WolfCore.FileAPI.File(path);
         var readerRLT = new WolfCore.FileAPI.BufferedReader(new WolfCore.FileAPI.InputStreamReader(new WolfCore.FileAPI.FIS(fileRLT)));
         var readRLT;
 		var textRLT;
         while ((readRLT = readerRLT.readLine()) != null) {
             if (readRLT.split(sp)[0] == text) {
                 textRLT = readRLT.split(sp)[1];
-                //print(typeof(textRLT.toString()));
 				return textRLT;
                 break;
             }
@@ -89,16 +85,6 @@ WolfCore.FileAPI = {
         }
         fileInput.close();
         return output;
-    },
-    readAssets:function(file){
-    		var readerRLT = new WolfCore.FileAPI.BufferedReader(new WolfCore.FileAPI.InputStreamReader(ModPE.openInputStreamFromTexturePack(file)));
-       var readRLT;
-       var text="";
-       while ((readRLT = readerRLT.readLine()) != null){
-       	text = text+readRLT+"\n";
-       	
-       }
-       return text;
     },
     write: function(selectedFile, text) {
         WolfCore.FileAPI.rewrite(selectedFile, (new WolfCore.FileAPI.read(selectedFile)) + text);
@@ -130,10 +116,6 @@ WolfCore.FileAPI = {
                     if (typeof(lookFor) == "string") {
                         if (!fileName2.endsWith(lookFor)) {
                             continue;
-                        }else{
-                        	fileList.push(fileName2);
-                                break;
-                            
                         }
                     } else
                     if (lookFor instanceof Array) {
@@ -154,6 +136,7 @@ WolfCore.FileAPI = {
         return fileList;
     },
     readFolderList: function(path) {
+        var lookFor = ".js";
         var file = WolfCore.FileAPI.File(path);
         var Files = file.listFiles();
         var folderList = [];
@@ -184,8 +167,5 @@ WolfCore.Path.mods.mkdirs();
 WolfCore.Path.configs.mkdirs();
 WolfCore.Path.logs.mkdirs();
 WolfCore.Path.tmp.mkdirs();
-
-LoadingWindow.setStatus("Load FileAPI finish");
-
 
 WolfCore.LoadModules("Logcontunie");

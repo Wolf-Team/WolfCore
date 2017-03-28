@@ -2,8 +2,8 @@ var $ = this;
 
 var WolfCore = {};
 WolfCore.Name = "WolfCore";
-WolfCore.Version = "d2.0.1.270317";
-WolfCore.Author = "WolfTeam";
+WolfCore.Version = "d2.0.1.230217";
+WolfCore.Authoe = "WolfTeam";
 WolfCore.Abbr = "WC";
 WolfCore.API = 1;
 
@@ -12,13 +12,7 @@ WolfCore.context = WolfCore.ctx;
 WolfCore.jsContext = org.mozilla.javascript.ContextFactory().enterContext();
 
 WolfCore.UIrun = function(func){
-	WolfCore.ctx.runOnUiThread(new java.lang.Runnable({run: function(){
-		try{
-			func();
-		}catch(e){
-			WolfCore.Log.Error(e);
-		}
-	}}));
+	WolfCore.ctx.runOnUiThread(func);
 };
 
 WolfCore.LoadModules = function(name){
@@ -36,23 +30,22 @@ print = function(a){
 
 
 new java.lang.Thread(function() {
-	WolfCore.LoadModules("Loading");
-
 	WolfCore.LoadModules('Types');
-	WolfCore.LoadModules('var');
 	WolfCore.LoadModules("Date");
 	WolfCore.LoadModules("Log");
 	
 	WolfCore.LoadModules("File");
-	try{
+	
 	WolfCore.LoadModules("UI");
 	WolfCore.LoadModules("API");
-	
-	WolfCore.LoadModules("Dump");
-	
-	WolfCore.LoadModules("Mods");
-	}catch(e){
-		WolfCore.Log.Error(e);
-	}
-	LoadingWindow.dismiss();
-	}).start();
+
+}).start();
+
+WolfCore.CallBack.add('NewLevel', 'test', function(a){
+	print(a);
+});
+
+function newLevel(){
+	WolfCore.CallBack.invoke('NewLevel', 'test');
+}
+

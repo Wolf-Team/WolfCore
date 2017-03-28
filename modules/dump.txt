@@ -1,6 +1,9 @@
 WolfCore.API = 1
 
-WolfCore.CallBack.add(par1_string, par2_function, par3_int);
+WolfCore.Add.Item(par1_int, par2_string, par3_object, par4_int)
+WolfCore.Add.Item(par1_int, par2_string, par3_object)
+
+WolfCore.CallBack.add(par1_string, par2_function, par3_int)
 
 WolfCore.FileAPI.create(par1_string,par2_string)
 WolfCore.FileAPI.createNewDir(par1_string,par2_string)

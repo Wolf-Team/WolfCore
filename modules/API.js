@@ -13,7 +13,7 @@ WolfCore.CallBack.add = function(name,func,num){
 	var list = WolfCore.CallBack.callbacks[name];
   if(!list) list = [];
   if(num==-1)
-  list.push({call:func});
+  return list.push({call:func});
   else
   list[num]={call:func};
   
@@ -155,6 +155,31 @@ WolfCore.Add.Block = function(a,b,c){
 	});
 }
 
+WolfCore.Add.Items = function(b){
+	for(var c in b){
+		var a = b[c];
+		try{
+			Item.defineItem(a.id, a.texture.name, a.texture.data, a.name, a.stack);
+		}catch(e){
+			Item.defineItem(a.id, "null",  0, a.name, a.stack);
+			WolfCore.Log.Warning("Текстура не найдена");
+		}
+	}
+}
+WolfCore.Add.Blocks = function(b){
+	for(var c in b){
+		var a = b[c];
+		try{
+			Block.defineBlock(a.id, a.name, a.texture, 0, false, 0);
+		}catch(e){
+			Block.defineBlock(a.id, a.name, [['null',0]], 0, false, 0);
+		}
+	}
+}
 
+WolfCore.CallBack.add('Startup', function(){
+	WolfCore.Add.Items(WolfCore.items);
+	WolfCore.Add.Blocks(WolfCore.blocks);
+});
 
 WolfCore.Log.Info("Инициализация завершена")

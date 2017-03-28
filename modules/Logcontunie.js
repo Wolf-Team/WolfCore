@@ -13,16 +13,12 @@ WolfCore.Log.Info = function(a){
 }
 WolfCore.Log.Warning = function(a){
 	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Abbr+"][WARNING]:"+a);
-
-	//WolfCore.FileAPI.write(WolfCore.FileAPI.select(WolfCore.Log.File), WolfCore.FileAPI.read(WolfCore.FileAPI.select(WolfCore.Log.File))+"\n[WC][WARNING]:"+a);
 }
 WolfCore.Log.Error = function(a){
 	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Abbr+"][ERROR]:"+a);
-
-	//WolfCore.FileAPI.write(WolfCore.FileAPI.select(WolfCore.Log.File), WolfCore.FileAPI.read(WolfCore.FileAPI.select(WolfCore.Log.File))+"\n[WC][ERROR]:"+a);
 }
 
 WolfCore.Log.Info(WolfCore.Name);
-	WolfCore.Log.Info("v."+WolfCore.Version);
-	WolfCore.Log.Info("©"+WolfCore.Author);
-	WolfCore.Log.Warning("Thanks:\n    -NML");
+WolfCore.Log.Info("v."+WolfCore.Version);
+WolfCore.Log.Info("©"+WolfCore.Author);
+WolfCore.Log.Warning("Thanks:\n    -NML");

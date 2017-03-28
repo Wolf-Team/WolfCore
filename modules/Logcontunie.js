@@ -7,15 +7,28 @@ for (var i = 0;;i++)
 		break;
 	}
 	
-
-WolfCore.Log.Info = function(a){
-	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Abbr+"][LOG]:"+a);
+WolfCore.Log.Write = function(a){
+	if(!WolfCore.Log.File.exists()){
+		WolfCore.Log.File.createNewFile();
+	}
+	WolfCore.FileAPI.write(WolfCore.Log.File, a);
 }
-WolfCore.Log.Warning = function(a){
-	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Abbr+"][WARNING]:"+a);
+	
+WolfCore.Log.GetAbbr = function(a){
+	if(a==null||typeof(a)!="string")
+		return WolfCore.Abbr;
+	else
+		return a;
 }
-WolfCore.Log.Error = function(a){
-	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Abbr+"][ERROR]:"+a);
+	
+WolfCore.Log.Info = function(a, b){
+	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Log.GetAbbr(b)+"][LOG]:"+a);
+}
+WolfCore.Log.Warning = function(a,b){
+	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Log.GetAbbr(b)+"][WARNING]:"+a);
+}
+WolfCore.Log.Error = function(a,b){
+	WolfCore.FileAPI.write(WolfCore.Log.File, "["+WolfCore.Log.GetAbbr(b)+"][ERROR]:"+a);
 }
 
 WolfCore.Log.Info(WolfCore.Name);

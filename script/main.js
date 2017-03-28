@@ -55,6 +55,6 @@ new java.lang.Thread(function() {
 		WolfCore.Log.Error(e);
 	}
 	LoadingWindow.dismiss();
+	WolfCore.CallBack.invoke('Startup');
 }).start();
 
-WolfCore.CallBack.invoke('Startup');

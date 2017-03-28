@@ -64,6 +64,11 @@ WolfCore.Mods.Read=function(x){
 
 }
 
+WolfCore.Mods.UI = {};
+WolfCore.Mods.UI.MainButton = function(){
+	var but = WolfCore.UI.Button(WolfCore.Abbr);
+	var popup = WolfCore.UI.Popup(but, WolfCore.UI.Top|WolfCore.UI.Left);
+}
 
 WolfCore.Mods.Load();
 //WolfCore.Log.Info(typeof(WolfCore.FileAPI.readLineText(WolfCore.FileAPI.select(WolfCore.Path.mods+"/mod1","config.wcc"),":","enable")));

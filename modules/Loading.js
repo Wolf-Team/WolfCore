@@ -19,7 +19,7 @@ var ScaledExitBitmap = android.graphics.Bitmap.createScaledBitmap(ExitBitmap,400
 	lay.setOrientation(1);
 	popup = new android.widget.PopupWindow(lay, -1, -1);
 	popup.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.WHITE));
-	popup.showAtLocation(WolfCore.ctx.getWindow().getDecorView(),17,0,0);
+	popup.showAtLocation(WolfCore.ctx.getWindow().getDecorView(),1|16,0,0);
 	
 	});
 	

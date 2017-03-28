@@ -161,25 +161,53 @@ WolfCore.UI.Panel = function(x,y,w,h, isCenter, outsideTouchable){
 	
 	var controls = {
 		dismiss:function(){
-			window.dismiss();
+			WolfCore.UI.run(function(){
+				if(window){
+					window.dismiss();
+					window = null;
+				}
+			});
 		},
 		addView:function(view){
-			layout.addView(view);
+			WolfCore.UI.run(function(){
+				layout.addView(view);
+			});
 		},
 		setTitle:function(text){
-			if(title.getVisibility()!=android.view.View.VISIBLE){
+			WolfCore.UI.run(function(){
+				if(title.getVisibility()!=android.view.View.VISIBLE){
 				title.setVisibility(android.view.View.VISIBLE);
 			}
 			title.setText(text);
+			});
 		},
 		hideTitle:function(){
-			title.setVisibility(android.view.View.GONE);
+			WolfCore.UI.run(function(){
+				title.setVisibility(android.view.View.GONE);
+			});
 		}
 	};
 	WolfCore.Log.Info("Create panel "+text);
 	return controls;
 };
-
+WolfCore.UI.Popup=function(view, gravity){
+	var window = new android.widget.PopupWindow(view, -2,-2);
+	WolfCore.UI.run(function(){
+		window.showAtLocation(WolfCore.UI.ctx.getWindow().getDecorView(), gravity, 2, 2);
+	});
+	
+	var controls = {
+		dismiss:function(){
+			WolfCore.UI.run(function(){
+				if(window){
+					window.dismiss();
+					window = null;
+				}
+			});
+		},
+	};
+	return controls;
+}
 
 WolfCore.UI.Utils = {
 	onTouch: function(v, motionEvent) {

@@ -34,10 +34,26 @@ WolfCore.UI.run(par1_function)
 WolfCore.UI.stylizeText(par1_view)
 WolfCore.UI.Text(par1_string)
 
+//For Log
 WolfCore.ERROR
 WolfCore.INFO
 WolfCore.MESSAGE
 WolfCore.WARNING
+
+/For CallBack
+WolfCore.AddBlocks
+WolfCore.AddItems
+WolfCore.Attack
+WolfCore.Chat
+WolfCore.Command
+WolfCore.ContinueDestroy
+WolfCore.Destroy
+WolfCore.ModTick
+WolfCore.NewLevel
+WolfCore.ScreenChange
+WolfCore.StartDestroy
+WolfCore.Startup
+WolfCore.Use
 
 WolfCore.Date.Day
 WolfCore.Date.Hour

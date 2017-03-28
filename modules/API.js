@@ -9,17 +9,21 @@ WolfCore.CallBack.callbacks={};
 WolfCore.CallBack.add = function(name,func,num){
 	if(num==null)
 		num=-1;
-		
-	var list = WolfCore.CallBack.callbacks[name];
-  if(!list) list = [];
-  if(num==-1)
-  return list.push({call:func});
-  else
-  list[num]={call:func};
-  
-  WolfCore.CallBack.callbacks[name] = list;
 	
-	};
+	var list = WolfCore.CallBack.callbacks[name];
+	
+	if(!list) list = [];
+	
+	if(num==-1){
+		var a = list.length+1;
+		list.push({call:func});
+	}else
+		list[num]={call:func};
+	
+	WolfCore.CallBack.callbacks[name] = list;	
+	if(num==-1)
+		return a;
+};
 
 WolfCore.CallBack.invoke=function(name,a,b,c,d,e,f,g,h){
 	var list = WolfCore.CallBack.callbacks[name];
@@ -31,11 +35,11 @@ WolfCore.CallBack.invoke=function(name,a,b,c,d,e,f,g,h){
 };
 
 function newLevel(){
-	WolfCore.CallBack.invoke('NewLevel', Level.getWorldName(), Level.getWorldDir());
+	WolfCore.CallBack.invoke(WolfCore.NewLevel, Level.getWorldName(), Level.getWorldDir());
 }
 
 function modTick(){
-	WolfCore.CallBack.invoke('ModTick',{
+	WolfCore.CallBack.invoke(WolfCore.ModTick,{
 		x:Player.getX(),
 		y:Player.getY(),
 		z:Player.getZ(),
@@ -51,7 +55,7 @@ function modTick(){
 }
 
 function useItem(a,b,c,d,e,f,g,h){
-	WolfCore.CallBack.invoke('UseItem',{
+	WolfCore.CallBack.invoke(WolfCore.Use,{
 		x:a,
 		y:b,
 		z:c,
@@ -69,31 +73,36 @@ function startDestroyBlock(x, y, z, side){
 	WolfCore.vars.destroyBlock.id = getTile(x,y,z);
 	WolfCore.vars.destroyBlock.data = Level.getData(x,y,z);
 	
-	WolfCore.CallBack.invoke('StartDestroyBlock',x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side);
+	WolfCore.CallBack.invoke(WolfCore.StartDestroy,x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side);
 }
 function continueDestroyBlock(x, y, z, side, progress){
 	WolfCore.vars.destroyBlock.id = getTile(x,y,z);
 	WolfCore.vars.destroyBlock.data = Level.getData(x,y,z);
 	
-	WolfCore.CallBack.invoke('ContinueDestroyBlock',x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side, progress);
+	WolfCore.CallBack.invoke(WolfCore.ContinueDestroy,x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side, progress);
 
 }
 
 function destroyBlock(x, y, z, side){
-	WolfCore.CallBack.invoke('DestroyBlock',x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side);
+	WolfCore.CallBack.invoke(WolfCore.Destroy,x,y,z,WolfCore.vars.destroyBlock.id,WolfCore.vars.destroyBlock.data,side);
 }
 
 function attackHook(a,b){
-	WolfCore.CallBack.invoke('Attack',a,b);
+	WolfCore.CallBack.invoke(WolfCore.Attack,a,b);
 }
 
 function chatHook(str) {
 	if (str.startsWith("/")) {
 		var spl = str.slice(1).split(" ");
-		WolfCore.CallBack.invoke('Command',spl);
+		WolfCore.CallBack.invoke(WolfCore.Command,spl);
 	} else {
-		WolfCore.CallBack.invoke('Chat',str)
+		WolfCore.CallBack.invoke(WolfCore.Chat,str)
 	}
+}
+
+function screenChangeHook(screenName){
+	WolfCore.vars.screen = screenName;
+	WolfCore.CallBack.invoke(WolfCore.ScreenChange,WolfCore.vars.screen);
 }
 
 WolfCore.Add = {};
@@ -156,28 +165,34 @@ WolfCore.Add.Block = function(a,b,c){
 }
 
 WolfCore.Add.Items = function(b){
+	var errors = 0;
 	for(var c in b){
 		var a = b[c];
 		try{
 			Item.defineItem(a.id, a.texture.name, a.texture.data, a.name, a.stack);
 		}catch(e){
+			errors++;
 			Item.defineItem(a.id, "null",  0, a.name, a.stack);
 			WolfCore.Log.Warning("Текстура не найдена");
 		}
 	}
+	WolfCore.CallBack.add(WolfCore.AddItems, errors);
 }
 WolfCore.Add.Blocks = function(b){
+	var errors = 0;
 	for(var c in b){
 		var a = b[c];
 		try{
 			Block.defineBlock(a.id, a.name, a.texture, 0, false, 0);
 		}catch(e){
+			errors++;
 			Block.defineBlock(a.id, a.name, [['null',0]], 0, false, 0);
 		}
 	}
+	WolfCore.CallBack.add(WolfCore.AddBlocks, errors);
 }
 
-WolfCore.CallBack.add('Startup', function(){
+WolfCore.CallBack.add(WolfCore.Startup, function(){
 	WolfCore.Add.Items(WolfCore.items);
 	WolfCore.Add.Blocks(WolfCore.blocks);
 });

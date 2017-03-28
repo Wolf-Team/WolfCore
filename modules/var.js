@@ -3,4 +3,5 @@ WolfCore.vars = {
 		id:0,
 		date:0,
 	},
+	screen:"start_screen",
 };

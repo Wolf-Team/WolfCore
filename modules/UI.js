@@ -64,6 +64,10 @@ WolfCore.FileAPI.writeBytes(new java.io.File(WolfCore.Path.tmp, "font.ttf"), Wol
 WolfCore.UI.Resource.font = android.graphics.Typeface.createFromFile(new java.io.File(WolfCore.Path.tmp, "font.ttf"));
 new java.io.File(WolfCore.Path.tmp, "font.ttf")["delete"]();
 
+WolfCore.FileAPI.writeBytes(new java.io.File(WolfCore.Path.tmp, "null.png"), WolfCore.UI.get("logo.png"));
+WolfCore.UI.Resource.nullLogo =  android.graphics.BitmapFactory.decodeFile(new java.io.File(WolfCore.Path.tmp, "null.png"));
+new java.io.File(WolfCore.Path.tmp, "null.png")["delete"]();
+
 WolfCore.UI.Top = 48;
 WolfCore.UI.Left = 3;
 WolfCore.UI.Bottom = 80;
@@ -81,8 +85,8 @@ WolfCore.UI.stylizeText=function(textView){
 
 	textView.setTypeface(WolfCore.UI.Resource.font);
 	textView.setPaintFlags(textView.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-	textView.setLineSpacing(4 * Display.dpi, 1);
-	var something = Math.round((textView.getLineHeight() - (4 * Display.dpi)) / 8);
+	textView.setLineSpacing(4 * WolfCore.Display.dpi, 1);
+	var something = Math.round((textView.getLineHeight() - (4 * WolfCore.Display.dpi)) / 8);
 	textView.setShadowLayer(1, something, something, android.graphics.Color.parseColor("#FF393939"));
 };
 
@@ -114,35 +118,43 @@ WolfCore.UI.Button = function(text){
 			}
 		)
 	);
-	button.setBackground(WolfCore.UI.Resource.button_normal.normal.getConstantState().newDrawable());
-	button.setPadding(8 * Display.dpi, 8 * Display.dpi, 8 * Display.dpi, 8 * Display.dpi);
+	button.setBackground(WolfCore.UI.Resource.button_normal.getConstantState().newDrawable());
+	button.setPadding(8 * WolfCore.Display.dpi, 8 * WolfCore.Display.dpi, 8 * WolfCore.Display.dpi, 8 * WolfCore.Display.dpi);
 	WolfCore.UI.stylizeText(button);
 	
 	WolfCore.Log.Info("Create button "+text);
 	return button;
 }
 WolfCore.UI.Text = function(text){
-	var textView = new android.widget.TextView(context);
+	var textView = new android.widget.TextView(WolfCore.UI.context);
 	textView.setText(text);
 	WolfCore.UI.stylizeText(textView);
 	
 	WolfCore.Log.Info("Create text "+text);
 	return textView;
 };
-WolfCore.UI.Panel = function(x,y,w,h, isCenter, outsideTouchable){
+WolfCore.UI.Panel = function(x,y,w,h,titleText, isCenter, outsideTouchable, pad){
 	if(isCenter==null){
 		isCenter = true;
 	}
 	if(outsideTouchable==null){
 		outsideTouchable = true;
 	}
+	if(titleText==null){
+		titleText = "Panel";
+	}
+	if(pad==null){
+		pad=10;
+	}
 	var scroll = new android.widget.ScrollView(WolfCore.UI.ctx);
 	scroll.setBackgroundDrawable(WolfCore.UI.Resource.panel);
 	
 	var layout = new android.widget.LinearLayout(WolfCore.UI.ctx);
+	layout.setPadding(WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad));
+	layout.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(-1,-1));
 	scroll.addView(layout);
 	var window = new android.widget.PopupWindow(scroll, w, h);
-	var title = new WolfCore.UI.Text("Panel");
+	var title = new WolfCore.UI.Text(titleText);
 	title.setVisibility(android.view.View.GONE);
 	var darkWindow;
 	var dwl = new android.widget.LinearLayout(WolfCore.UI.ctx);
@@ -187,9 +199,76 @@ WolfCore.UI.Panel = function(x,y,w,h, isCenter, outsideTouchable){
 			});
 		}
 	};
-	WolfCore.Log.Info("Create panel "+text);
+	WolfCore.Log.Info("Create panel "+titleText);
 	return controls;
 };
+WolfCore.UI.PanelWithoutScroll = function(x,y,w,h,titleText, isCenter, outsideTouchable, pad){
+	if(isCenter==null){
+		isCenter = true;
+	}
+	if(outsideTouchable==null){
+		outsideTouchable = true;
+	}
+	if(titleText==null){
+		titleText = "Panel";
+	}
+	if(pad==null){
+		pad=10;
+	}
+	var layout = new android.widget.LinearLayout(WolfCore.UI.ctx);
+	layout.setBackgroundDrawable(WolfCore.UI.Resource.panel);
+	layout.setPadding(WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad),WolfCore.UI.dp2pixel(pad));
+	layout.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(-1,-1));
+	var window = new android.widget.PopupWindow(layout, w, h);
+	var title = new WolfCore.UI.Text(titleText);
+	title.setVisibility(android.view.View.GONE);
+	var darkWindow;
+	var dwl = new android.widget.LinearLayout(WolfCore.UI.ctx);
+	if(!outsideTouchable){
+		darkWindow = new android.widget.PopupWindow(dwl, -1, -1);
+		darkWindow.setBackgroundDrawable(WolfCore.UI.Color.dark);
+	}
+	
+	WolfCore.UI.run(function(){
+		if(!outsideTouchable)
+			darkWindow.showAtLocation(WolfCore.UI.ctx.getWindow().getDecorView(), WolfCore.UI.Center, 0, 0);
+		
+		window.showAtLocation(WolfCore.UI.ctx.getWindow().getDecorView(), isCenter ? WolfCore.UI.Center : WolfCore.UI.TopLeft, x, y);
+	});
+	
+	
+	var controls = {
+		dismiss:function(){
+			WolfCore.UI.run(function(){
+				if(window){
+					window.dismiss();
+					window = null;
+				}
+			});
+		},
+		addView:function(view){
+			WolfCore.UI.run(function(){
+				layout.addView(view);
+			});
+		},
+		setTitle:function(text){
+			WolfCore.UI.run(function(){
+				if(title.getVisibility()!=android.view.View.VISIBLE){
+				title.setVisibility(android.view.View.VISIBLE);
+			}
+			title.setText(text);
+			});
+		},
+		hideTitle:function(){
+			WolfCore.UI.run(function(){
+				title.setVisibility(android.view.View.GONE);
+			});
+		}
+	};
+	WolfCore.Log.Info("Create panel "+titleText);
+	return controls;
+};
+
 WolfCore.UI.Popup=function(view, gravity){
 	var window = new android.widget.PopupWindow(view, -2,-2);
 	WolfCore.UI.run(function(){
@@ -243,15 +322,15 @@ WolfCore.UI.Utils = {
 		}
 	},
 	changeToNormalState: function(button, textColor) {
-		button.setBackground(resources.drawable.gui.button.normal);
+		button.setBackground(WolfCore.UI.Resource.button_normal);
 		button.setTextColor(android.graphics.Color.parseColor(textColor));
-		var something = Math.round((button.getLineHeight() - (4 * Display.dpi)) / 8);
+		var something = Math.round((button.getLineHeight() - (4 * WolfCore.Display.dpi)) / 8);
 		button.setShadowLayer(1, something, something, android.graphics.Color.parseColor("#FF393939"));
 	}, 
 	changeToPressedState: function(button) {
-		button.setBackground(resources.drawable.gui.button.pressed);
+		button.setBackground(WolfCore.UI.Resource.button_pressed);
 		button.setTextColor(android.graphics.Color.parseColor("#FFFFFF9C"));
-		var something = Math.round((button.getLineHeight() - (4 * Display.dpi)) / 8);
+		var something = Math.round((button.getLineHeight() - (4 * WolfCore.Display.dpi)) / 8);
 		button.setShadowLayer(1, something, something, android.graphics.Color.parseColor("#FF3E3E28"));
 	}
 };
